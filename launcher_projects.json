@@ -13,5 +13,10 @@
     "name": "Snake Game",
     "path": "SnakeInPython/src/main.py",
     "description": ""
+  },
+  {
+    "name": "Flappy Bird",
+    "path": "Flappy-Bird/src/main.py",
+    "description": ""
   }
 ]
