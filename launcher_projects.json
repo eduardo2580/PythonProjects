@@ -18,5 +18,10 @@
     "name": "Flappy Bird",
     "path": "Flappy-Bird/src/main.py",
     "description": ""
+  },
+  {
+    "name": "Pong Game",
+    "path": "PongInPython/src/main.py",
+    "description": ""
   }
 ]
