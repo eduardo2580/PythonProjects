@@ -23,5 +23,10 @@
     "name": "Pong Game",
     "path": "PongInPython/src/main.py",
     "description": ""
+  },
+  {
+    "name": "Secure Password Generator",
+    "path": "SecurePassGenerator/src/main.py",
+    "description": ""
   }
 ]
