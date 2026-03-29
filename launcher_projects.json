@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Web Browser",
+    "path": "BrowserInPython/src/main.py",
+    "description": ""
+  },
+  {
+    "name": "Calculator",
+    "path": "CalculatorInPython/src/main.py",
+    "description": ""
+  }
+]
