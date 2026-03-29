@@ -8,5 +8,10 @@
     "name": "Calculator",
     "path": "CalculatorInPython/src/main.py",
     "description": ""
+  },
+  {
+    "name": "Snake Game",
+    "path": "SnakeInPython/src/main.py",
+    "description": ""
   }
 ]
