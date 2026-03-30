@@ -28,5 +28,10 @@
     "name": "Secure Password Generator",
     "path": "SecurePassGenerator/src/main.py",
     "description": ""
+  },
+  {
+    "name": "QR Code Generator",
+    "path": "QRcodeGenerator/src/main.py",
+    "description": ""
   }
 ]
