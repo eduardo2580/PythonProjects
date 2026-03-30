@@ -33,5 +33,10 @@
     "name": "QR Code Generator",
     "path": "QRcodeGenerator/src/main.py",
     "description": ""
+  },
+  {
+    "name": "Tic Tac Toe",
+    "path": "TicTacToe/src/main.py",
+    "description": ""
   }
 ]
