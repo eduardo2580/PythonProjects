@@ -2,41 +2,41 @@
   {
     "name": "Web Browser",
     "path": "BrowserInPython/src/main.py",
-    "description": ""
+    "description": "A simple web browser application allowing users to navigate and view websites."
   },
   {
     "name": "Calculator",
     "path": "CalculatorInPython/src/main.py",
-    "description": ""
+    "description": "A standard calculator application for performing basic to advanced arithmetic operations."
   },
   {
     "name": "Snake Game",
     "path": "SnakeInPython/src/main.py",
-    "description": ""
+    "description": "A classic arcade game where the player controls a growing snake to consume food while avoiding collisions."
   },
   {
     "name": "Flappy Bird",
     "path": "Flappy-Bird/src/main.py",
-    "description": ""
+    "description": "A 2D side-scrolling game where the player navigates a flying bird through a series of pipe obstacles."
   },
   {
     "name": "Pong Game",
     "path": "PongInPython/src/main.py",
-    "description": ""
+    "description": "A retro table tennis-themed arcade game featuring two moving paddles and a bouncing ball."
   },
   {
     "name": "Secure Password Generator",
     "path": "SecurePassGenerator/src/main.py",
-    "description": ""
+    "description": "A utility tool that creates strong, randomized, and complex passwords for enhanced security."
   },
   {
     "name": "QR Code Generator",
     "path": "QRcodeGenerator/src/main.py",
-    "description": ""
+    "description": "An application that encodes user-provided text or URLs into downloadable, scannable QR code images."
   },
   {
     "name": "Tic Tac Toe",
     "path": "TicTacToe/src/main.py",
-    "description": ""
+    "description": "A classic two-player turn-based strategy game played on a 3x3 grid to align three matching symbols."
   }
 ]
