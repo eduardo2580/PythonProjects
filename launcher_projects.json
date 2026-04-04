@@ -1,42 +1,74 @@
 [
-  {
+{
     "name": "Web Browser",
     "path": "BrowserInPython/src/main.py",
-    "description": "A simple web browser application allowing users to navigate and view websites."
+    "description": {
+      "en": "A simple web browser application.",
+      "es": "Una aplicación de navegador web sencilla.",
+      "pt": "Um aplicativo de navegador web simples."
+    }
   },
   {
     "name": "Calculator",
     "path": "CalculatorInPython/src/main.py",
-    "description": "A standard calculator application for performing basic to advanced arithmetic operations."
+    "description": {
+      "en": "A standard calculator application.",
+      "es": "Una aplicación de calculadora estándar.",
+      "pt": "Um aplicativo de calculadora padrão."
+    }
   },
   {
     "name": "Snake Game",
     "path": "SnakeInPython/src/main.py",
-    "description": "A classic arcade game where the player controls a growing snake to consume food while avoiding collisions."
+    "description": {
+      "en": "A classic arcade game.",
+      "es": "Un juego arcade clásico.",
+      "pt": "Um jogo de arcade clássico."
+    }
   },
   {
     "name": "Flappy Bird",
     "path": "Flappy-Bird/src/main.py",
-    "description": "A 2D side-scrolling game where the player navigates a flying bird through a series of pipe obstacles."
+    "description": {
+      "en": "A 2D side-scrolling game where the player navigates a flying bird through a series of pipe obstacles.",
+      "es": "Un juego de desplazamiento lateral en 2D donde el jugador navega un pájaro volador a través de una serie de obstáculos de tubos.",
+      "pt": "Um jogo de deslocamento lateral em 2D onde o jogador navega um pássaro voando através de uma série de obstáculos de tubos."
+    }
   },
   {
     "name": "Pong Game",
     "path": "PongInPython/src/main.py",
-    "description": "A retro table tennis-themed arcade game featuring two moving paddles and a bouncing ball."
+    "description": {
+      "en": "A retro table tennis-themed arcade game featuring two moving paddles and a bouncing ball.",
+      "es": "Un juego de arcade con tema de tenis de mesa retro que presenta dos paletas en movimiento y una bola rebotante.",
+      "pt": "Um jogo de arcade com tema de tênis de mesa retro que apresenta duas raquetes em movimento e uma bola saltitante."
+    }
   },
   {
     "name": "Secure Password Generator",
     "path": "SecurePassGenerator/src/main.py",
-    "description": "A utility tool that creates strong, randomized, and complex passwords for enhanced security."
+    "description": {
+      "en": "A utility tool that creates strong, randomized, and complex passwords for enhanced security.",
+      "es": "Una herramienta útil que crea contraseñas fuertes, aleatorias y complejas para una seguridad mejorada.",
+      "pt": "Uma ferramenta utilitária que cria senhas fortes, aleatórias e complexas para uma segurança aprimorada."
+    }
   },
   {
     "name": "QR Code Generator",
     "path": "QRcodeGenerator/src/main.py",
-    "description": "An application that encodes user-provided text or URLs into downloadable, scannable QR code images."
+    "description": {
+      "en": "An application that encodes user-provided text or URLs into downloadable, scannable QR code images.",
+      "es": "Una aplicación que codifica el texto o las URLs proporcionadas por el usuario en imágenes de códigos QR descargables y escaneables.",
+      "pt": "Um aplicativo que codifica o texto ou URLs fornecidos pelo usuário em imagens de códigos QR baixáveis e digitalizáveis."
+    }
   },
   {
     "name": "Tic Tac Toe",
     "path": "TicTacToe/src/main.py",
-    "description": "A classic two-player turn-based strategy game played on a 3x3 grid to align three matching symbols."
+    "description": {
+      "en": "A classic two-player turn-based strategy game played on a 3x3 grid to align three matching symbols.",
+      "es": "Un juego de estrategia clásico de turnos para dos jugadores jugado en una cuadrícula de 3x3 para alinear tres símbolos coincidentes.",
+      "pt": "Um jogo de estratégia clássico de turnos para dois jogadores jogado em uma grade de 3x3 para alinhar três símbolos correspondentes."
+    }
   }
 ]
