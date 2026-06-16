@@ -27,11 +27,11 @@
   <text x="52" y="55" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14" font-weight="700" fill="#1c1917">Py</text>
 
   <!-- Main title -->
-  <text x="80" y="44" class="title">Proyectos</text>
+  <text x="80" y="44" class="title">Proyectos de Eduardo</text>
   <text x="80" y="74" font-family="ui-monospace,'Cascadia Code',monospace" font-size="28" font-weight="700" fill="#f59e0b">Python</text>
 
   <!-- Subtitle -->
-  <text x="80" y="100" class="subtitle">Colección de juegos, herramientas y utilidades — construidos con Python</text>
+  <text x="80" y="100" class="subtitle">Colección de cosas construidos con Python</text>
 
   <!-- Divider -->
   <line x1="24" y1="116" x2="656" y2="116" stroke="#1e293b" stroke-width="1"/>

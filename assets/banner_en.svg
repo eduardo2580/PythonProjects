@@ -38,7 +38,7 @@
   <text x="80" y="74" font-family="ui-monospace,'Cascadia Code',monospace" font-size="28" font-weight="700" fill="#3b82f6">Projects</text>
 
   <!-- Subtitle -->
-  <text x="80" y="100" class="subtitle">A curated collection of games, tools &amp; utilities — built with Python</text>
+  <text x="80" y="100" class="subtitle">A curated collection built with Python</text>
 
   <!-- Divider -->
   <line x1="24" y1="116" x2="656" y2="116" stroke="#1e293b" stroke-width="1"/>
