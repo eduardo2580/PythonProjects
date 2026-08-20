@@ -5,7 +5,7 @@ import sys
 import os
 import json
 import threading
-import re
+import ast
 
 # ── Config ───────────────────────────────────────────────────────────────────
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -52,8 +52,6 @@ I18N = {
         "no_projects":   "No projects configured.\nEdit launcher_projects.json to add entries.",
         "no_results":    "No results match your search.",
         "hint":          "Protected under Brazilian Law 9,610/98",
-        "output_title":  "Output from {}",
-        "missing_module": "Module '{}' not found.\nInstall it now using pip?",
         "installing":    "Installing {}...",
         "install_success": "Module '{}' installed successfully. Re-running script...",
         "install_fail":   "Failed to install '{}'.\nError:\n{}",
@@ -76,8 +74,6 @@ I18N = {
         "no_projects":   "No hay proyectos configurados.\nEdita launcher_projects.json para agregar entradas.",
         "no_results":    "Ningún resultado coincide con tu búsqueda.",
         "hint":          "Protegido por la Ley Brasileña 9.610/98",
-        "output_title":  "Salida de {}",
-        "missing_module": "Módulo '{}' no encontrado.\n¿Instalarlo ahora con pip?",
         "installing":    "Instalando {}...",
         "install_success": "Módulo '{}' instalado correctamente. Reejecutando script...",
         "install_fail":   "Error al instalar '{}'.\nError:\n{}",
@@ -100,8 +96,6 @@ I18N = {
         "no_projects":   "Nenhum projeto configurado.\nEdite launcher_projects.json para adicionar entradas.",
         "no_results":    "Nenhum resultado corresponde à sua pesquisa.",
         "hint":          "Protegido pela Lei Brasileira nº 9.610/98",
-        "output_title":  "Saída de {}",
-        "missing_module": "Módulo '{}' não encontrado.\nInstalá-lo agora usando pip?",
         "installing":    "Instalando {}...",
         "install_success": "Módulo '{}' instalado com sucesso. Reexecutando script...",
         "install_fail":   "Falha ao instalar '{}'.\nErro:\n{}",
@@ -498,111 +492,44 @@ class Launcher(tk.Tk):
         for card in self.cards.values():
             card.refresh_lang()
 
-    def _show_output(self, project_name: str, stdout: str, stderr: str):
-        """Show script output in a popup window."""
-        output = ""
-        if stdout:
-            output += stdout
-        if stderr:
-            if stdout:
-                output += "\n--- STDERR ---\n"
-            output += stderr
-        if not output.strip():
-            return
-        
-        win = tk.Toplevel(self)
-        win.title(self._t("output_title").format(project_name))
-        win.geometry("600x400")
-        win.configure(bg=BG)
-        
-        frame = tk.Frame(win, bg=BG)
-        frame.pack(fill="both", expand=True, padx=10, pady=10)
-        
-        text = tk.Text(frame, bg=CARD, fg=TEXT, font=FONT_BODY, wrap="word", relief="flat", borderwidth=0)
-        text.insert("1.0", output)
-        text.config(state="disabled")
-        
-        scroll = ttk.Scrollbar(frame, orient="vertical", command=text.yview)
-        text.configure(yscrollcommand=scroll.set)
-        
-        text.pack(side="left", fill="both", expand=True)
-        scroll.pack(side="right", fill="y")
-        
-        btn = tk.Button(win, text="Close", command=win.destroy, bg=ACCENT, fg="white", font=FONT_BTN, relief="flat", padx=10, pady=4)
-        btn.pack(pady=(0, 10))
-
-    def _try_install_module(self, module_name, project, card, original_cmd, cwd):
-        """Attempt to install missing module and re-run the script."""
-        result = messagebox.askyesno(
-            self._t("err_title"),
-            self._t("missing_module").format(module_name)
-        )
-        if not result:
-            card.set_status("error")
-            self._set_status(self._t("errored").format(project["name"]))
-            return False
-
-        self._set_status(self._t("installing").format(module_name))
-        try:
-            install_proc = subprocess.run(
-                [sys.executable, "-m", "pip", "install", module_name],
-                capture_output=True, text=True, timeout=60
-            )
-            if install_proc.returncode != 0:
-                error_msg = install_proc.stderr or install_proc.stdout or "Unknown error"
-                self.after(0, lambda: messagebox.showerror(
-                    self._t("err_title"),
-                    self._t("install_fail").format(module_name, error_msg)
-                ))
-                card.set_status("error")
-                self._set_status(self._t("errored").format(project["name"]))
-                return False
-        except Exception as e:
-            self.after(0, lambda: messagebox.showerror(
-                self._t("err_title"),
-                self._t("install_fail").format(module_name, str(e))
-            ))
-            card.set_status("error")
-            self._set_status(self._t("errored").format(project["name"]))
-            return False
-
-        self._set_status(self._t("install_success").format(module_name))
-        self._run_project(project, card, retry=True)
-        return True
-
     def _get_imported_modules(self, script_path: str) -> set:
-        """Extract top-level module names from import statements."""
+        """Extract top-level module names from import statements, via the AST
+        (handles `import x as y`, `import a, b`, relative imports, etc.
+        correctly — a hand-rolled string parser gets these wrong)."""
         modules = set()
         try:
             with open(script_path, "r", encoding="utf-8") as f:
-                content = f.read()
-            lines = content.splitlines()
-            for line in lines:
-                line = line.strip()
-                if line.startswith("import "):
-                    parts = line.split()[1:]
-                    for p in parts:
-                        mod = p.split(",")[0].split(" as ")[0].strip()
-                        if mod and not mod.startswith("."):
-                            modules.add(mod)
-                elif line.startswith("from "):
-                    parts = line.split()
-                    if len(parts) >= 2:
-                        mod = parts[1].split(" import ")[0]
-                        if mod and not mod.startswith("."):
-                            modules.add(mod)
+                tree = ast.parse(f.read(), filename=script_path)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    for alias in node.names:
+                        modules.add(alias.name.split(".")[0])
+                elif isinstance(node, ast.ImportFrom):
+                    if node.module and node.level == 0:  # skip relative imports
+                        modules.add(node.module.split(".")[0])
         except Exception:
             pass
         return modules
+
+    # Import name -> PyPI package name, for the handful of common cases
+    # where they differ. Keep this short; it's a fallback, not a registry.
+    _PIP_NAME_OVERRIDES = {
+        "PIL": "Pillow",
+        "cv2": "opencv-python",
+        "yaml": "PyYAML",
+        "bs4": "beautifulsoup4",
+        "sklearn": "scikit-learn",
+        "dotenv": "python-dotenv",
+    }
 
     def _ensure_modules_installed(self, project: dict, card: "ProjectCard") -> bool:
         """Check if all imported modules are installed; if not, ask to install."""
         path = project["path"]
         modules = self._get_imported_modules(path)
+        stdlib = getattr(sys, "stdlib_module_names", set())
         missing = []
-        builtins = {"sys", "os", "tkinter", "csv", "json", "re", "threading", "subprocess", "math", "random", "time", "collections", "itertools", "datetime"}
         for mod in modules:
-            if mod in builtins:
+            if mod in stdlib:
                 continue
             try:
                 subprocess.run([sys.executable, "-c", f"import {mod}"], capture_output=True, check=True, timeout=5)
@@ -611,6 +538,7 @@ class Launcher(tk.Tk):
         if not missing:
             return True
 
+        pip_names = [self._PIP_NAME_OVERRIDES.get(mod, mod) for mod in missing]
         if len(missing) == 1:
             msg = f"Module '{missing[0]}' is required but not installed.\nInstall it now using pip?"
         else:
@@ -620,29 +548,29 @@ class Launcher(tk.Tk):
             self._set_status(self._t("errored").format(project["name"]))
             return False
 
-        for mod in missing:
+        for mod in pip_names:
             self._set_status(self._t("installing").format(mod))
             try:
                 proc = subprocess.run([sys.executable, "-m", "pip", "install", mod],
                                       capture_output=True, text=True, timeout=60)
                 if proc.returncode != 0:
                     error_msg = proc.stderr or proc.stdout or "Unknown error"
-                    self.after(0, lambda: messagebox.showerror(
+                    self.after(0, lambda m=mod, e=error_msg: messagebox.showerror(
                         self._t("err_title"),
-                        self._t("install_fail").format(mod, error_msg)
+                        self._t("install_fail").format(m, e)
                     ))
                     card.set_status("error")
                     self._set_status(self._t("errored").format(project["name"]))
                     return False
             except Exception as e:
-                self.after(0, lambda: messagebox.showerror(
+                self.after(0, lambda m=mod, e=str(e): messagebox.showerror(
                     self._t("err_title"),
-                    self._t("install_fail").format(mod, str(e))
+                    self._t("install_fail").format(m, e)
                 ))
                 card.set_status("error")
                 self._set_status(self._t("errored").format(project["name"]))
                 return False
-        self._set_status(self._t("install_success").format(", ".join(missing)))
+        self._set_status(self._t("install_success").format(", ".join(pip_names)))
         return True
 
     def _open_terminal_window(self, project: dict, card: "ProjectCard"):
